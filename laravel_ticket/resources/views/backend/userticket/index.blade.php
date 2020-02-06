@@ -39,7 +39,6 @@
                                 <th>Level</th>
                                 <th>Name</th>
                                 <th>Email</th>
-								<th>Area</th>
 								<th>Actions</th>
 							</tr>
 						</thead>
@@ -68,7 +67,6 @@
                 {data: 'user_level', name: 'user_level'},
                 {data: 'name', name: 'name'},
                 {data: 'email', name: 'email'},
-				{data: 'area', name: 'area'},
 				{data: 'action', name: 'action', orderable: false, searchable: false}
 			],
 			responsive: true,

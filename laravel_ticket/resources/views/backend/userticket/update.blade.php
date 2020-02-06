@@ -89,7 +89,7 @@
 								{{
 								Form::select(
 									'tipe',
-									['AD' => 'ACTIVE DIRECTORY', 'AGEN' => 'AGEN'],
+									['AD' => 'ACTIVE DIRECTORY', 'AGEN' => 'LAINNYA'],
 									$tipe,
 									array(
 										'class' => 'form-control',
@@ -143,7 +143,7 @@
 								<input type="text" name="reldag" class="form-control" value="<?=$reldag;?>">
 							</div>
                         </div>
-						<div class="form-group">
+						<div class="form-group hide">
 							<label class="control-label col-sm-3 col-xs-12">Area</label>
 							<div class="col-sm-3 col-xs-12">
 								<input type="text" name="area" class="form-control" value="<?=$area;?>">
