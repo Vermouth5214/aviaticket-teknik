@@ -5,6 +5,7 @@
             <th><b>Ticket No</b></th>
             <th><b>Requester</b></th>
             <th><b>Title</b></th>
+            <th><b>No SPK</b></th>
             <th><b>Description</b></th>
             <th><b>Request Date</b></th>
             <th><b>Category</b></th>
@@ -26,6 +27,7 @@
             <td>{{ $item->Ticket_No }}</td>
             <td>{{ $item->Requester }}</td>
             <td>{{ $item->Title }}</td>
+            <td>{{ $item->SPK }}</td>
             <td>{{ $item->Description }}</td>
             <td>{{ $item->Request_Date }}</td>
             <td>{{ $item->Category }}</td>

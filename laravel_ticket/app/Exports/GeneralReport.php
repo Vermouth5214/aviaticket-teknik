@@ -35,6 +35,7 @@ class GeneralReport implements FromView, ShouldAutoSize
             'ticket.no_ticket as Ticket_No',
             'user_ticket.name as Requester',
             'ticket.judul as Title',
+            'ticket.SPK',
             'ticket.keterangan as Description',
             'ticket.created_at as Request_Date',
             'category.category as Category',
@@ -107,7 +108,6 @@ class GeneralReport implements FromView, ShouldAutoSize
         if ($this->user_agen != 999){
             $data = $data->where('ticket.reldag','=',$this->user_agen);
         }
-
 
         $data = $data->orderBy('ticket.created_at','DESC')->get();
 

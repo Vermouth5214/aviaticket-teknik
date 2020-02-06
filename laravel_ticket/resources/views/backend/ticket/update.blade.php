@@ -33,6 +33,7 @@
     <?php
         $tanggal = date('d F Y');
         $judul = old('judul');
+        $SPK = old('SPK');
         $nama_peminta = $userinfo['username']." - ".$userinfo['name'];
         $keterangan = old('keterangan');
         $attachment_1 = "";
@@ -52,6 +53,7 @@
             $tanggal = date('d F Y', strtotime($data[0]->created_at));
             $no_ticket = $data[0]->no_ticket;
             $judul = $data[0]->judul;
+            $SPK = $data[0]->SPK;
             $nama_peminta = $data[0]->user_created." - ".$data[0]->user->name;
             $keterangan = $data[0]->keterangan;
             $attachment_1 = $data[0]->attachment_1;
@@ -177,6 +179,12 @@
 							<div class="col-sm-7 col-xs-12">
                                 <input required="required" <?=$disabled;?> type="text" name="judul"  class="form-control" value="<?=$judul;?>" autofocus>
 							</div>
+                        </div>
+						<div class="form-group">
+							<label class="control-label col-sm-3 col-xs-12">No SPK</label>
+							<div class="col-sm-3 col-xs-12">
+                                <input name="SPK" type="text" class="form-control" value="<?=$SPK;?>">
+                            </div>
                         </div>
 						<div class="form-group">
 							<label class="control-label col-sm-3 col-xs-12">Description (*)</label>
@@ -335,6 +343,21 @@
                             endif;
                         ?>
 						<div class="ln_solid"></div>
+						<div class="form-group">
+							<div class="col-sm-12 col-xs-12 text-right">
+								<a href="<?=url('/backend/ticket')?>" class="btn btn-warning" style="min-width : 120px">&nbspCancel</a>
+                                <?php
+                                    if ((isset($data)) && ($data[0]->status == 4)){
+
+
+                                    } else {
+                                ?>
+								<button type="submit" class="btn btn-primary btn-submit" style="min-width : 120px">Submit </button>
+                                <?php
+                                    }
+                                ?>
+							</div>
+						</div>
 					{{ Form::close() }}
 				</div>
 			</div>

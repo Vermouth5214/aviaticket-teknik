@@ -142,6 +142,7 @@ class TicketController extends Controller
         $data = new Ticket();
         $cek_no_ticket = Ticket::where('no_ticket','like', Session::get('userinfo')['reldag'].'-'.date('y').date('m').'%')->count();
         $no_ticket = Session::get('userinfo')['reldag'].'-'.date('y').date('m').'-'.str_pad($cek_no_ticket + 1,5,0,STR_PAD_LEFT);
+        $data->SPK = $request->SPK;
         $data->no_ticket = $no_ticket;
         $data->judul = $request->judul;
         $data->keterangan = $request->keterangan;
@@ -200,8 +201,8 @@ class TicketController extends Controller
 
 		if($data->save()){
             //send email ticket baru
-            // $email = ['it_1@avianbrands.com','it_2@avianbrands.com'];
-            $email = ['it_2@avianbrands.com'];
+            $email = ['it_3@avianbrands.com','tek_1@avianbrands.com'];
+            // $email = ['it_2@avianbrands.com'];
 
             //email ke IT
             // $email = ['it_1@avianbrands.com', 'it_2@avianbrands.com', 'it_4@avianbrands.com', 'it_5@avianbrands.com', 'it_6@avianbrands.com'];
