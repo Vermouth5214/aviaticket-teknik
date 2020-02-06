@@ -25,7 +25,7 @@
                         <div class="clearfix"></div>
                         <div>
                             <h1><center><a href="<?=url('/');?>"><img src="<?=url(getData('logo'));?>"; class='img-responsive' style="max-width:150px;"></a></center></h1>
-                            <p>&copy;2018 <b>Version</b> 1.0.0 <strong>All rights reserved.</strong></p>
+                            <p>&copy;2020 <b>Version</b> 1.0.0 <strong>All rights reserved.</strong></p>
                         </div>
                         </div>
                     </form>
