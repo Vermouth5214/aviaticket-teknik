@@ -201,8 +201,8 @@ class TicketController extends Controller
 
 		if($data->save()){
             //send email ticket baru
-            $email = ['it_3@avianbrands.com','tek_1@avianbrands.com'];
-            // $email = ['it_2@avianbrands.com'];
+            // $email = ['it_3@avianbrands.com','tek_1@avianbrands.com'];
+            $email = ['it_3@avianbrands.com'];
 
             //email ke IT
             // $email = ['it_1@avianbrands.com', 'it_2@avianbrands.com', 'it_4@avianbrands.com', 'it_5@avianbrands.com', 'it_6@avianbrands.com'];
@@ -216,7 +216,7 @@ class TicketController extends Controller
                 URL Ticket : <a href='".url('backend/ticket/'.$data->id.'/edit')."'>".url('backend/ticket/'.$data->id.'/edit')."</a>
                 ";
                 \Mail::send([], [], function ($message) use ($email_to, $data, $message_2) {
-                    $message->to($email_to)
+                    $message->to(trim($email_to))
                     ->subject('(AVIA Ticket) Ada ticket baru dengan nomor '.$data->no_ticket.' oleh user '.$data->user_created." - ".Session::get('userinfo')['name'])
                     ->setBody($message_2, 'text/html');
                 });    
@@ -338,7 +338,7 @@ class TicketController extends Controller
 
                     foreach ($email_to as $email):
                         \Mail::send([], [], function ($message) use ($email, $data, $message_2) {
-                            $message->to($email)
+                            $message->to(trim($email))
                             ->subject('(AVIA Ticket) Ticket nomor '.$data->no_ticket.' telah dijawab')
                             ->setBody($message_2, 'text/html');
                         });    
@@ -463,7 +463,7 @@ class TicketController extends Controller
                                     <b>Harap jangan balas email ini karena kami tidak dapat menanggapi pesan yang dikirim ke alamat email ini</b>.";
         
                         \Mail::send([], [], function ($message) use ($data_email, $data, $message_2) {
-                            $message->to($data_email[0]->email)
+                            $message->to(trim($data_email[0]->email))
                             ->subject('(AVIA Ticket) Ticket nomor '.$data->no_ticket.' terdapat pesan baru')
                             ->setBody($message_2, 'text/html');
                         });    
@@ -494,7 +494,7 @@ class TicketController extends Controller
 
                         foreach ($email_to as $email):
                             \Mail::send([], [], function ($message) use ($email, $data, $message_2) {
-                                $message->to($email)
+                                $message->to(trim($email))
                                 ->subject('(AVIA Ticket) Ticket nomor '.$data->no_ticket.' terdapat pesan baru')
                                 ->setBody($message_2, 'text/html');
                             });    
@@ -729,7 +729,7 @@ class TicketController extends Controller
                                 <b>Harap jangan balas email ini karena kami tidak dapat menanggapi pesan yang dikirim ke alamat email ini</b>.";
     
                     \Mail::send([], [], function ($message) use ($data_email, $data, $message_2) {
-                        $message->to($data_email[0]->email)
+                        $message->to(trim($data_email[0]->email))
                         ->subject('(AVIA Ticket) Ticket nomor '.$data->no_ticket.' telah ditutup')
                         ->setBody($message_2, 'text/html');
                     });    
@@ -771,7 +771,7 @@ class TicketController extends Controller
 
                 foreach ($email_to as $email):
                     \Mail::send([], [], function ($message) use ($email, $data, $message_2) {
-                        $message->to($email)
+                        $message->to(trim($email))
                         ->subject('(AVIA Ticket) Ticket nomor '.$data->no_ticket.' telah diajukan untuk ditutup')
                         ->setBody($message_2, 'text/html');
                     });    
