@@ -12,11 +12,17 @@ use App\Model\Category;
 use App\Model\Assignee;
 use App\Model\Comment;
 use App\Model\UserTicket;
+use App\Model\AMSAsset;
+use App\Model\NAVAssetCat;
+use App\Model\NAVAssetPipa;
 use Illuminate\Support\Facades\Redirect;
 use Validator;
 use Datatables;
 use DB;
-
+use Swift_Mailer;
+use Swift_MailTransport;
+use Swift_Message;
+use Swift_SmtpTransport;
 
 class TicketController extends Controller
 {
@@ -28,6 +34,7 @@ class TicketController extends Controller
     public function index()
     {
         //
+
         $userinfo = Session::get('userinfo');
 
         $status = 999;
@@ -114,7 +121,26 @@ class TicketController extends Controller
 
         $cek_no_ticket = Ticket::where('no_ticket','like', Session::get('userinfo')['reldag'].'-'.date('y').date('m').'%')->count();
         $no_ticket = Session::get('userinfo')['reldag'].'-'.date('y').date('m').'-'.str_pad($cek_no_ticket + 1,5,0,STR_PAD_LEFT);
+
+        //load asset
+        $AMSAsset = AMSAsset::where('jenis','<>','')->get();
+        $NAVAssetCat = NAVAssetCat::whereRaw("SUBSTRING(No_,2,1) IN ('M','K','V')")->get();        
+        $NAVAssetPipa = NAVAssetPipa::whereRaw("SUBSTRING(No_,2,1) IN ('M','K','V')")->get();
+
+        $asset = [];
+        foreach ($AMSAsset as $forasset):
+            $asset[$forasset->Kode] = $forasset->Kode." - ".$forasset->Nama;
+        endforeach;
+        foreach ($NAVAssetCat as $forasset):
+            $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description;
+        endforeach;
+        foreach ($NAVAssetPipa as $forasset):
+            $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description;
+        endforeach;
+
+        view()->share('asset', $asset);
         view()->share('no_ticket', $no_ticket);
+
         return view ('backend.ticket.update');
     }
 
@@ -142,7 +168,7 @@ class TicketController extends Controller
         $data = new Ticket();
         $cek_no_ticket = Ticket::where('no_ticket','like', Session::get('userinfo')['reldag'].'-'.date('y').date('m').'%')->count();
         $no_ticket = Session::get('userinfo')['reldag'].'-'.date('y').date('m').'-'.str_pad($cek_no_ticket + 1,5,0,STR_PAD_LEFT);
-        $data->SPK = $request->SPK;
+        $data->FACode = $request->FACode;
         $data->no_ticket = $no_ticket;
         $data->judul = $request->judul;
         $data->keterangan = $request->keterangan;
@@ -152,7 +178,7 @@ class TicketController extends Controller
 
         if ($request->hasFile('attachment_1')) {
             $file = $request->file('attachment_1');
-            $ext = $file->getClientOriginalExtension();
+            $ext = strtolower($file->getClientOriginalExtension());
             if (in_array($ext, $files_ext)){
                 $save_name = $no_ticket."-1-".$file->getClientOriginalName();
                 $file->move('upload/files', $save_name);
@@ -166,7 +192,7 @@ class TicketController extends Controller
         }
         if ($request->hasFile('attachment_2')) {
             $file = $request->file('attachment_2');
-            $ext = $file->getClientOriginalExtension();
+            $ext = strtolower($file->getClientOriginalExtension());
             if (in_array($ext, $files_ext)){
                 $save_name = $no_ticket."-2-".$file->getClientOriginalName();
                 $file->move('upload/files', $save_name);
@@ -180,7 +206,7 @@ class TicketController extends Controller
         }
         if ($request->hasFile('attachment_3')) {
             $file = $request->file('attachment_3');
-            $ext = $file->getClientOriginalExtension();
+            $ext = strtolower($file->getClientOriginalExtension());
             if (in_array($ext, $files_ext)){            
                 $save_name = $no_ticket."-3-".$file->getClientOriginalName();
                 $file->move('upload/files', $save_name);
@@ -202,8 +228,8 @@ class TicketController extends Controller
 		if($data->save()){
             //send email ticket baru
             // $email = ['it_3@avianbrands.com','tek_1@avianbrands.com'];
+            // $email = ['donny@avian.com', 'it_2@avianbrands.com'];
             $email = ['it_3@avianbrands.com'];
-
             //email ke IT
             // $email = ['it_1@avianbrands.com', 'it_2@avianbrands.com', 'it_4@avianbrands.com', 'it_5@avianbrands.com', 'it_6@avianbrands.com'];
             // if (Session::get('userinfo')['tipe'] == "AGEN"){
@@ -212,14 +238,38 @@ class TicketController extends Controller
 
             foreach ($email as $email_to):
                 $message_2 = "Ticket baru dengan nomor : ".$data->no_ticket."<br/><br/>"."Judul : ".$data->judul."<br/><br/>Keterangan : ".nl2br($data->keterangan)."<br/><br/>Diminta oleh : ".$data->user_created." - ".Session::get('userinfo')['name']."<br/><br/><br/>Harap segera diberi tanggapan<br/><br/><br/>
-                
-                URL Ticket : <a href='".url('backend/ticket/'.$data->id.'/edit')."'>".url('backend/ticket/'.$data->id.'/edit')."</a>
                 ";
-                \Mail::send([], [], function ($message) use ($email_to, $data, $message_2) {
-                    $message->to(trim($email_to))
-                    ->subject('(AVIA Ticket) Ada ticket baru dengan nomor '.$data->no_ticket.' oleh user '.$data->user_created." - ".Session::get('userinfo')['name'])
-                    ->setBody($message_2, 'text/html');
-                });    
+
+                if (strpos($email_to, 'avian.com') !== false) {
+                    $backup = \Mail::getSwiftMailer();
+
+                    // Setup your gmail mailer
+                    $transport = new Swift_SmtpTransport('192.168.110.112', 587);
+                    $transport->setUsername('info@avian.com');
+                    $transport->setPassword('123456789012345');
+                    // Any other mailer configuration stuff needed...
+                   
+                    $gmail = new Swift_Mailer($transport);
+                   
+                    // Set the mailer as gmail
+                    \Mail::setSwiftMailer($gmail);
+                    
+                    // Send your message
+                    \Mail::send([], [], function ($message) use ($email_to, $data, $message_2) {
+                        $message->to(trim($email_to))
+                        ->subject('(AVIA Ticket) Ada ticket baru dengan nomor '.$data->no_ticket.' oleh user '.$data->user_created." - ".Session::get('userinfo')['name'])
+                        ->setBody($message_2, 'text/html');
+                    });
+                    
+                    // Restore your original mailer
+                    \Mail::setSwiftMailer($backup);                
+                } else {
+                    \Mail::send([], [], function ($message) use ($email_to, $data, $message_2) {
+                        $message->to(trim($email_to))
+                        ->subject('(AVIA Ticket) Ada ticket baru dengan nomor '.$data->no_ticket.' oleh user '.$data->user_created." - ".Session::get('userinfo')['name'])
+                        ->setBody($message_2, 'text/html');
+                    });
+                }
             endforeach;
 
 			return Redirect::to('/backend/ticket/')->with('success', "Data saved successfully")->with('mode', 'success');
@@ -259,6 +309,25 @@ class TicketController extends Controller
                     return Redirect::to('/backend/ticket/');
                 }
             }
+
+            //load asset
+            $AMSAsset = AMSAsset::where('jenis','<>','')->get();
+            $NAVAssetCat = NAVAssetCat::whereRaw("SUBSTRING(No_,2,1) IN ('M','K','V')")->get();        
+            $NAVAssetPipa = NAVAssetPipa::whereRaw("SUBSTRING(No_,2,1) IN ('M','K','V')")->get();
+
+            $asset = [];
+            foreach ($AMSAsset as $forasset):
+                $asset[$forasset->Kode] = $forasset->Kode." - ".$forasset->Nama;
+            endforeach;
+            foreach ($NAVAssetCat as $forasset):
+                $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description;
+            endforeach;
+            foreach ($NAVAssetPipa as $forasset):
+                $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description;
+            endforeach;
+
+            view()->share('asset', $asset);
+
             view()->share('list_category', $category);
             view()->share('list_assignee', $assignee);
 			return view ('backend.ticket.update', ['data' => $data]);
@@ -364,17 +433,17 @@ class TicketController extends Controller
                 if ($data->prioritas <> $request->prioritas){
                     //insert ke comment
                     $lama = "";
-                    if ($data->prioritas == "3H"){
+                    if ($data->prioritas == "30H"){
                         $lama = "Minor";
                     } else 
-                    if ($data->prioritas == "9H"){
+                    if ($data->prioritas == "90H"){
                         $lama = "Major";
                     }
                     $baru = "";
-                    if ($data->request == "3H"){
+                    if ($data->request == "30H"){
                         $baru = "Minor";
                     } else 
-                    if ($data->request == "9H"){
+                    if ($data->request == "90H"){
                         $baru = "Major";
                     }
 
@@ -423,8 +492,7 @@ class TicketController extends Controller
             $insert->ticket_id = $id;
             if ($request->hasFile('attachment')) {
                 $file = $request->file('attachment');
-                $ext = $file->getClientOriginalExtension();
-                
+                $ext = strtolower($file->getClientOriginalExtension());
                 $size = $file->getClientSize();
                 if ($size > 3145728){
                     $validator->getMessageBag()->add('extension', 'Maximum file size 3MB');
@@ -640,10 +708,10 @@ class TicketController extends Controller
             })
             ->editColumn('prioritas', function($data){
                 $text = "";
-                if ($data->prioritas == "3H"){
+                if ($data->prioritas == "30H"){
                     $text = "Minor";
                 } else 
-                if ($data->prioritas == "9H"){
+                if ($data->prioritas == "90H"){
                     $text = "Major";
                 }
                 return $text;

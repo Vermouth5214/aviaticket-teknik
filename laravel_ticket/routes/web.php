@@ -14,13 +14,14 @@
 use App\Model\Ticket;
 use App\Model\UserTicket;
 
+
 Route::get('/', function () {
 	return redirect('backend/');
 });
 
 
 Route::get('/email-reminder', function () {
-    $data = Ticket::where('status', '=', 2)->where('active', 1)->whereRaw('datediff(date_add(ticket.start, interval left(ticket.prioritas,1)-0 day), CURDATE()) = 0')->get();
+    $data = Ticket::where('status', '=', 2)->where('active', 1)->whereRaw('datediff(date_add(ticket.start, interval left(ticket.prioritas,2)-0 day), CURDATE()) = 0')->get();
     if (count($data)){
         foreach ($data as $item):
             $data_email = UserTicket::where('username','=',$item->user_jawab)->get();
@@ -38,11 +39,36 @@ Route::get('/email-reminder', function () {
                             
                             Terima kasih";
 
-                \Mail::send([], [], function ($message) use ($data_email, $item, $message_2) {
-                    $message->to($data_email[0]->email)
-                    ->subject('(Avia Ticket) Hari terakhir pengerjaan Ticket nomor '.$item->no_ticket)
-                    ->setBody($message_2, 'text/html');
-                });    
+                if (strpos($data_email[0]->email, 'avian.com') !== false) {
+                    $backup = \Mail::getSwiftMailer();
+
+                    // Setup your gmail mailer
+                    $transport = new Swift_SmtpTransport('192.168.110.112', 587);
+                    $transport->setUsername('info@avian.com');
+                    $transport->setPassword('123456789012345');
+                    // Any other mailer configuration stuff needed...
+                    
+                    $gmail = new Swift_Mailer($transport);
+                    
+                    // Set the mailer as gmail
+                    \Mail::setSwiftMailer($gmail);
+                    
+                    // Send your message
+                    \Mail::send([], [], function ($message) use ($data_email, $data, $message_2) {
+                        $message->to(trim($data_email[0]->email))
+                        ->subject('(Avia Ticket) Hari terakhir pengerjaan Ticket nomor '.$item->no_ticket)
+                        ->setBody($message_2, 'text/html');
+                    });
+                    
+                    // Restore your original mailer
+                    \Mail::setSwiftMailer($backup);                
+                } else {
+                    \Mail::send([], [], function ($message) use ($data_email, $item, $message_2) {
+                        $message->to(trim($data_email[0]->email))
+                        ->subject('(Avia Ticket) Hari terakhir pengerjaan Ticket nomor '.$item->no_ticket)
+                        ->setBody($message_2, 'text/html');
+                    });
+                }
             }
         endforeach;
     }
@@ -75,11 +101,37 @@ Route::get('/auto-close', function () {
                                     
                                     Harap jangan balas email ini karena kami tidak dapat menanggapi pesan yang dikirim ke alamat email ini.";
         
-                        \Mail::send([], [], function ($message) use ($data_email, $insert, $message_2) {
-                            $message->to($data_email[0]->email)
-                            ->subject('(Avia Ticket) Ticket nomor '.$insert->no_ticket.' telah ditutup oleh system')
-                            ->setBody($message_2, 'text/html');
-                        });    
+
+                        if (strpos($data_email[0]->email, 'avian.com') !== false) {
+                            $backup = \Mail::getSwiftMailer();
+
+                            // Setup your gmail mailer
+                            $transport = new Swift_SmtpTransport('192.168.110.112', 587);
+                            $transport->setUsername('info@avian.com');
+                            $transport->setPassword('123456789012345');
+                            // Any other mailer configuration stuff needed...
+                            
+                            $gmail = new Swift_Mailer($transport);
+                            
+                            // Set the mailer as gmail
+                            \Mail::setSwiftMailer($gmail);
+                            
+                            // Send your message
+                            \Mail::send([], [], function ($message) use ($data_email, $data, $message_2) {
+                                $message->to(trim($data_email[0]->email))
+                                ->subject('(Avia Ticket) Ticket nomor '.$insert->no_ticket.' telah ditutup oleh system')
+                                ->setBody($message_2, 'text/html');
+                            });
+                            
+                            // Restore your original mailer
+                            \Mail::setSwiftMailer($backup);                
+                        } else {
+                            \Mail::send([], [], function ($message) use ($data_email, $item, $message_2) {
+                                $message->to(trim($data_email[0]->email))
+                                ->subject('(Avia Ticket) Ticket nomor '.$insert->no_ticket.' telah ditutup oleh system')
+                                ->setBody($message_2, 'text/html');
+                            });
+                        }
                     }
                 }
             }

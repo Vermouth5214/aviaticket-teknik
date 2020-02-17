@@ -91,6 +91,38 @@ return [
             'prefix_indexes' => true,
         ],
 
+        'DB-NAV' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL_NAV'),
+            'host' => env('DB_HOST_NAV', 'localhost'),
+            'port' => env('DB_PORT_NAV', '1433'),
+            'database' => env('DB_DATABASE_NAV', 'forge'),
+            'username' => env('DB_USERNAME_NAV', 'forge'),
+            'password' => env('DB_PASSWORD_NAV', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+
+        'DB-AMS' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL_AMS'),
+            'host' => env('DB_HOST_AMS', '127.0.0.1'),
+            'port' => env('DB_PORT_AMS', '3306'),
+            'database' => env('DB_DATABASE_AMS', 'forge'),
+            'username' => env('DB_USERNAME_AMS', 'forge'),
+            'password' => env('DB_PASSWORD_AMS', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => false,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],        
     ],
 
     /*
