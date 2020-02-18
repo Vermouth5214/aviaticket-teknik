@@ -103,7 +103,7 @@
                     if (($data[0]->status == 2) && (($userinfo['priv'] == "VSUPER")  || (($userinfo['priv'] == "VADM") && ($data[0]->assignee == $userinfo['username']) && (date('Y-m-d') >= date('Y-m-d',strtotime($data[0]->start))  ) ))):
                         $visible = false;
                 ?>
-                        <div class="col-md-3 col-sm-3 col-xs-4 form-group pull-right top_search hide">                
+                        <div class="col-md-3 col-sm-3 col-xs-4 form-group pull-right top_search">                
                             <a href="<?=url('backend/ticket/close/'.$data[0]->id);?>" id="close" class="btn btn-block btn-danger">Close</a>
                         </div>
                 <?php
@@ -115,7 +115,7 @@
                             $text = "Close";
                         }
                 ?>
-                        <div class="col-md-3 col-sm-3 col-xs-4 form-group pull-right top_search hide">                
+                        <div class="col-md-3 col-sm-3 col-xs-4 form-group pull-right top_search">                
                             <a href="<?=url('backend/ticket/close/'.$data[0]->id);?>" id="close" class="btn btn-block btn-danger"><?=$text;?></a>
                         </div>
                 <?php
@@ -303,7 +303,7 @@
 								{{
                                     Form::select(
                                         'prioritas',
-                                        ['' => '', '3H' => 'Minor', '9H' => 'Major'],
+                                        ['' => '', '30H' => 'Minor', '90H' => 'Major'],
                                         $prioritas,
                                         array(
                                             'class' => 'form-control',
