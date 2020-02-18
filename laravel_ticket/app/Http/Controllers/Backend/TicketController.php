@@ -124,18 +124,18 @@ class TicketController extends Controller
 
         //load asset
         $AMSAsset = AMSAsset::where('jenis','<>','')->get();
-        $NAVAssetCat = NAVAssetCat::whereRaw("SUBSTRING(No_,2,1) IN ('M','K','V')")->get();        
-        $NAVAssetPipa = NAVAssetPipa::whereRaw("SUBSTRING(No_,2,1) IN ('M','K','V')")->get();
+        $NAVAssetCat = NAVAssetCat::get();        
+        $NAVAssetPipa = NAVAssetPipa::get();
 
         $asset = [];
         foreach ($AMSAsset as $forasset):
             $asset[$forasset->Kode] = $forasset->Kode." - ".$forasset->Nama;
         endforeach;
         foreach ($NAVAssetCat as $forasset):
-            $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description;
+            $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description." - ".$forasset->{"FA Location Code"};
         endforeach;
         foreach ($NAVAssetPipa as $forasset):
-            $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description;
+            $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description." - ".$forasset->{"FA Location Code"};
         endforeach;
 
         view()->share('asset', $asset);
@@ -310,20 +310,20 @@ class TicketController extends Controller
                 }
             }
 
-            //load asset
+            //load asset            
             $AMSAsset = AMSAsset::where('jenis','<>','')->get();
-            $NAVAssetCat = NAVAssetCat::whereRaw("SUBSTRING(No_,2,1) IN ('M','K','V')")->get();        
-            $NAVAssetPipa = NAVAssetPipa::whereRaw("SUBSTRING(No_,2,1) IN ('M','K','V')")->get();
-
+            $NAVAssetCat = NAVAssetCat::get();        
+            $NAVAssetPipa = NAVAssetPipa::get();
+    
             $asset = [];
             foreach ($AMSAsset as $forasset):
                 $asset[$forasset->Kode] = $forasset->Kode." - ".$forasset->Nama;
             endforeach;
             foreach ($NAVAssetCat as $forasset):
-                $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description;
+                $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description." - ".$forasset->{"FA Location Code"};
             endforeach;
             foreach ($NAVAssetPipa as $forasset):
-                $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description;
+                $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description." - ".$forasset->{"FA Location Code"};
             endforeach;
 
             view()->share('asset', $asset);
@@ -642,7 +642,7 @@ class TicketController extends Controller
 
         }
 
-        $data = Ticket::select(['ticket.*','category.category','user_ticket.name','assignee.name as assignee','user_ticket.area'])
+        $data = Ticket::select(['ticket.*','category.category','user_ticket.name','user_ticket.area'])
                 ->leftJoin('user_ticket','user_ticket.username','=','ticket.reldag')
                 ->leftJoin('user_ticket as assignee','assignee.username','=','ticket.assignee')
                 ->leftJoin('category','ticket.category_id','=','category.id')

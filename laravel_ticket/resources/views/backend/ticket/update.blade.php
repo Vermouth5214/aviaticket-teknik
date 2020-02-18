@@ -184,7 +184,7 @@
                         </div>
 						<div class="form-group">
 							<label class="control-label col-sm-3 col-xs-12">FA Code</label>
-							<div class="col-sm-5 col-xs-12">
+							<div class="col-sm-7 col-xs-12">
 								{{
 								Form::select(
 									'FACode',
@@ -327,27 +327,7 @@
 						<div class="form-group">
 							<label class="control-label col-sm-3 col-xs-12">Assignee</label>
 							<div class="col-sm-3 col-xs-12">
-                                <?php 
-                                    if ($userinfo['priv'] == "VSUPER"){
-                                ?>
-								{{
-                                    Form::select(
-                                        'assignee',
-                                        $list_assignee,
-                                        $assignee,
-                                        array(
-                                            'class' => 'form-control',
-                                            'required' => 'required',
-                                            $disabled
-                                        ))
-                                }}
-                                <?php
-                                    } else {
-                                ?>
-                                    <input disabled type='text' class="form-control" value='<?=$assignee;?>' />
-                                <?php
-                                    }
-                                ?>
+                                <input disabled type='text' class="form-control" value='<?=$assignee;?>' />
 							</div>
                         </div>
                         <hr/>
