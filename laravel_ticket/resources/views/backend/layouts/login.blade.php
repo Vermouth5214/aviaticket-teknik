@@ -55,7 +55,8 @@
 						}
 					}, 
 					error: function(response){
-						console.log(response);
+						alert('Login Error. Please try again.');
+						location.reload();
 					}
 				});
 				return false;

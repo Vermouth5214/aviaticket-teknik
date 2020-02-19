@@ -216,16 +216,7 @@ Route::group(array('prefix' => 'backend','middleware'=> ['token_all']), function
 {
     Route::get('/user-guide', function () {
         $userinfo = Session::get('userinfo');
-        if ($userinfo['tipe'] == "AD"){
-            if (($userinfo['priv'] == "SLS") || ($userinfo['priv'] == "DSD")){
-                return response()->file('upload/SOP Avia Ticket (SM).pdf');
-            } else {
-                return response()->file('upload/SOP Avia Ticket.pdf');
-            }
-        } else 
-        if ($userinfo['tipe'] == "AGEN"){
-            return response()->file('upload/SOP Avia Ticket (agent).pdf');
-        }
+        return response()->file('upload/SOP Avia Ticket Teknik .pdf');
     });
 
 	Route::get('',function (){return Redirect::to('backend/dashboard');});

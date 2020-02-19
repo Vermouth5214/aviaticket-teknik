@@ -15,7 +15,7 @@ use Redirect;
 class DashboardController extends Controller {
 	public function dashboard(Request $request) {
 		$userinfo = Session::get('userinfo');
-		if ($userinfo['priv'] != "VSUPER"){
+		if (($userinfo['priv'] != "VSUPER") && ($userinfo['priv'] != "VADM")){
 			return Redirect::to('/backend/ticket/');
 		}
 

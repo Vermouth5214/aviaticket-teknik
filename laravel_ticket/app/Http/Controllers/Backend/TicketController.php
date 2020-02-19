@@ -128,8 +128,9 @@ class TicketController extends Controller
         $NAVAssetPipa = NAVAssetPipa::get();
 
         $asset = [];
+        $asset[''] = '';
         foreach ($AMSAsset as $forasset):
-            $asset[$forasset->Kode] = $forasset->Kode." - ".$forasset->Nama;
+            $asset[$forasset->Kode] = $forasset->Kode." - ".$forasset->Nama." - ".$forasset->Lokasi;
         endforeach;
         foreach ($NAVAssetCat as $forasset):
             $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description." - ".$forasset->{"FA Location Code"};
@@ -317,7 +318,7 @@ class TicketController extends Controller
     
             $asset = [];
             foreach ($AMSAsset as $forasset):
-                $asset[$forasset->Kode] = $forasset->Kode." - ".$forasset->Nama;
+                $asset[$forasset->Kode] = $forasset->Kode." - ".$forasset->Nama." - ".$forasset->Lokasi;
             endforeach;
             foreach ($NAVAssetCat as $forasset):
                 $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description." - ".$forasset->{"FA Location Code"};

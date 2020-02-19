@@ -193,7 +193,8 @@
 									array(
                                         'class' => 'form-control',
                                         'id' => 'FACode',
-                                        $disabled
+                                        $disabled,
+                                        'required' => 'required'
 									))
 								}}
                             </div>

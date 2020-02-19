@@ -7,7 +7,7 @@
 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
     <?php
         // SUPER ADMIN //
-        if ($userinfo['priv'] == "VSUPER"):
+        if (($userinfo['priv'] == "VSUPER") || ($userinfo['priv'] == "VADM")):
     ?>
     <div class="menu_section">
 		<ul class="nav side-menu">
