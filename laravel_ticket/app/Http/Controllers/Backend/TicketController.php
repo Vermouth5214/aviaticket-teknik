@@ -255,21 +255,29 @@ class TicketController extends Controller
                     // Set the mailer as gmail
                     \Mail::setSwiftMailer($gmail);
                     
+                    try {
                     // Send your message
-                    \Mail::send([], [], function ($message) use ($email_to, $data, $message_2) {
-                        $message->to(trim($email_to))
-                        ->subject('(AVIA Ticket) Ada ticket baru dengan nomor '.$data->no_ticket.' oleh user '.$data->user_created." - ".Session::get('userinfo')['name'])
-                        ->setBody($message_2, 'text/html');
-                    });
-                    
+                        \Mail::send([], [], function ($message) use ($email_to, $data, $message_2) {
+                            $message->to(trim($email_to))
+                            ->subject('(AVIA Ticket) Ada ticket baru dengan nomor '.$data->no_ticket.' oleh user '.$data->user_created." - ".Session::get('userinfo')['name'])
+                            ->setBody($message_2, 'text/html');
+                        });
+                    } catch (\Exception $e) {
+                        return Redirect::to('/backend/ticket/')->with('success', "Data saved successfully")->with('mode', 'success');      
+                    }                
+
                     // Restore your original mailer
                     \Mail::setSwiftMailer($backup);                
                 } else {
-                    \Mail::send([], [], function ($message) use ($email_to, $data, $message_2) {
-                        $message->to(trim($email_to))
-                        ->subject('(AVIA Ticket) Ada ticket baru dengan nomor '.$data->no_ticket.' oleh user '.$data->user_created." - ".Session::get('userinfo')['name'])
-                        ->setBody($message_2, 'text/html');
-                    });
+                    try {
+                        \Mail::send([], [], function ($message) use ($email_to, $data, $message_2) {
+                            $message->to(trim($email_to))
+                            ->subject('(AVIA Ticket) Ada ticket baru dengan nomor '.$data->no_ticket.' oleh user '.$data->user_created." - ".Session::get('userinfo')['name'])
+                            ->setBody($message_2, 'text/html');
+                        });
+                    } catch (\Exception $e) {
+                        return Redirect::to('/backend/ticket/')->with('success', "Data saved successfully")->with('mode', 'success');      
+                    }                
                 }
             endforeach;
 
