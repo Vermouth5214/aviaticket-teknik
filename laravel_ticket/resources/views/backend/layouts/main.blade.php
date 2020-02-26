@@ -104,6 +104,14 @@
                                         <li><a href="<?=url('backend/logout');?>"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                                     </ul>
                                 </li>
+                                <li>
+                                    <?php
+                                        $url = "http://".$_SERVER['HTTP_HOST'];
+                                    ?>
+                                    <a href="<?=$url;?>">
+                                        <i class="fa fa-home"> Main Menu </i>
+                                    </a>
+                                </li>
                             </ul>
                         </nav>
                     </div>
