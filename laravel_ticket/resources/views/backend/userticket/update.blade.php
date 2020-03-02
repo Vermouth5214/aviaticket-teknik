@@ -36,7 +36,9 @@
 		$reldag = old('reldag');
 		$area = old('area');
         $name = old('name');
-        $email = old('email');
+		$email = old('email');
+		$email_kabag = old('email_kabag');
+		$no_HP = old('no_HP');
 		$method = "POST";
 		$mode = "Create";
 		$url = "backend/user/";
@@ -48,7 +50,9 @@
 			$reldag = $data[0]->reldag;
 			$area = $data[0]->area;
             $name = $data[0]->name;
-            $email = $data[0]->email;
+			$email = $data[0]->email;
+			$email_kabag = $data[0]->email_kabag;
+			$no_HP = $data[0]->no_HP;
 			$method = "PUT";
 			$mode = "Edit";
 			$url = "backend/user/".$data[0]->id;
@@ -152,7 +156,19 @@
 						<div class="form-group">
 							<label class="control-label col-sm-3 col-xs-12">Email <span class="required">*</span></label>
 							<div class="col-sm-5 col-xs-12">
-								<input type="text" name="email" required="required" class="form-control" value="<?=$email;?>" autofocus>
+								<input type="text" name="email" required="required" class="form-control" value="<?=$email;?>">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-3 col-xs-12">Email Kabag </label>
+							<div class="col-sm-3 col-xs-12">
+								<input type="text" name="email_kabag" class="form-control" value="<?=$email_kabag;?>">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-3 col-xs-12">No HP</label>
+							<div class="col-sm-5 col-xs-12">
+								<input type="text" name="no_HP" class="form-control" value="<?=$no_HP;?>">
 							</div>
 						</div>
 						<div class="ln_solid"></div>

@@ -42,7 +42,7 @@ class DashboardController extends Controller {
 					->get();
 
 
-		$masalah_assignee = Ticket::select(['user_ticket.name as nama',DB::raw('count(ticket.id) as jumlah')])
+		$masalah_assignee = Ticket::select(['ticket.assignee as nama',DB::raw('count(ticket.id) as jumlah')])
 					->leftJoin('user_ticket', 'user_ticket.username', 'ticket.assignee')
                     ->where('ticket.active','=',1)
                     ->groupBy('ticket.assignee')

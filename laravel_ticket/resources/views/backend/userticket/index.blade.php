@@ -39,6 +39,8 @@
                                 <th>Level</th>
                                 <th>Name</th>
                                 <th>Email</th>
+								<th>Email Kabag</th>
+								<th>No HP</th>
 								<th>Actions</th>
 							</tr>
 						</thead>
@@ -67,6 +69,8 @@
                 {data: 'user_level', name: 'user_level'},
                 {data: 'name', name: 'name'},
                 {data: 'email', name: 'email'},
+				{data: 'email_kabag', name: 'email_kabag'},
+				{data: 'no_HP', name: 'no_HP'},
 				{data: 'action', name: 'action', orderable: false, searchable: false}
 			],
 			responsive: true,

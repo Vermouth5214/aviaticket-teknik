@@ -82,6 +82,8 @@ class UserTicketController extends Controller
                     $data->user_level = $request->user_level;
                     $data->name = $request->name;
                     $data->email = $request->email;
+                    $data->email_kabag = $request->email_kabag;
+                    $data->no_HP = $request->no_HP;
                     $data->area = $request->area;
                     $data->user_modified = Session::get('userinfo')['username'];
                     if($data->save()){
@@ -98,6 +100,8 @@ class UserTicketController extends Controller
                 $data->user_level = $request->user_level;
                 $data->name = $request->name;
                 $data->email = $request->email;
+                $data->email_kabag = $request->email_kabag;
+                $data->no_HP = $request->no_HP;
                 $data->area = $request->area;
                 $data->user_modified = Session::get('userinfo')['username'];
                 if($data->save()){
@@ -186,6 +190,8 @@ class UserTicketController extends Controller
                     $data->user_level = $request->user_level;
                     $data->name = $request->name;
                     $data->email = $request->email;
+                    $data->email_kabag = $request->email_kabag;
+                    $data->no_HP = $request->no_HP;
                     $data->area = $request->area;
                     $data->user_modified = Session::get('userinfo')['username'];
                     if($data->save()){
@@ -204,6 +210,8 @@ class UserTicketController extends Controller
                 $data->user_level = $request->user_level;
                 $data->name = $request->name;
                 $data->email = $request->email;
+                $data->email_kabag = $request->email_kabag;
+                $data->no_HP = $request->no_HP;
                 $data->area = $request->area;
                 $data->user_modified = Session::get('userinfo')['username'];
                 if($data->save()){

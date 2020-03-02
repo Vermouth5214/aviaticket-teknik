@@ -89,7 +89,6 @@
             $url = "backend/ticket/".$data[0]->id;
         }
 	?>
-
 	<div class="page-title">
 		<div class="title_left">
 			<h3>Ticket - <?=$mode;?></h3>
@@ -158,6 +157,7 @@
                                 $disabled = "disabled";
                             }
                         ?>
+                        <input type="hidden" name="FAText" id="FAText">
 						<div class="form-group">
 							<label class="control-label col-sm-3 col-xs-12">Ticket No</label>
 							<div class="col-sm-3 col-xs-12">
@@ -183,7 +183,7 @@
 							</div>
                         </div>
 						<div class="form-group">
-							<label class="control-label col-sm-3 col-xs-12">FA Code</label>
+							<label class="control-label col-sm-3 col-xs-12">FA Code (*)</label>
 							<div class="col-sm-7 col-xs-12">
 								{{
 								Form::select(
@@ -381,6 +381,7 @@
 
         $("#form-ticket").on('submit', function(e){
             if (confirm("Are you sure you want to submit this ticket?")) {
+                $('#FAText').val($("#FACode option:selected").html());
                 $('.btn-submit').prop('disabled', true);
                 $('.btn-submit').html('Processing');
                 return true;

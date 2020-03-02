@@ -25,6 +25,14 @@
 				<span class="form-control"><?=$data->email;?></span>
             </div>
 			<div class="form-group col-xs-12">
+				<label class="control-label">Email Kabag:</label>
+				<span class="form-control"><?=$data->email_kabag;?></span>
+            </div>
+			<div class="form-group col-xs-12">
+				<label class="control-label">No HP:</label>
+				<span class="form-control"><?=$data->no_HP;?></span>
+            </div>
+			<div class="form-group col-xs-12">
 				<label class="control-label">Date Created :</label>
 				<span class="form-control"><?=date('d M Y H:i:s', strtotime($data->created_at));?></span>
 			</div>
