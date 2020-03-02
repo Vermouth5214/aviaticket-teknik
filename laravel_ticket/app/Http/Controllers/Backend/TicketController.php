@@ -139,6 +139,9 @@ class TicketController extends Controller
             $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description." - ".$forasset->{"FA Location Code"};
         endforeach;
 
+        $asset['OTHERS-FACTORY'] = "OTHERS-FACTORY - MAINTENANCE OTHERS FACTORY";
+        $asset['OTHERS-RND'] = "OTHERS-RND - MAINTENANCE RND OTHERS";
+
         view()->share('asset', $asset);
         view()->share('no_ticket', $no_ticket);
 
@@ -237,7 +240,7 @@ class TicketController extends Controller
             //send email ticket baru
             // $email = ['it_3@avianbrands.com', 'tek_1@avianbrands.com', 'tek10@avian.com','aviantek01@gmail.com'];
             // $email = ['donny@avian.com', 'it_2@avianbrands.com'];
-            $email_luar  = ['it_3@avianbrands.com', 'tek_1@avianbrands.com', 'aviantek01@gmail.com'];
+            $email_luar  = ['it_3@avianbrands.com', 'aviantek01@gmail.com'];
             $email_lokal = ['tek10@avian.com'];
 
             // $email_luar  = ['it_2@avianbrands.com', 'oeidonny.winarto@gmail.com'];
@@ -386,6 +389,10 @@ class TicketController extends Controller
             foreach ($NAVAssetPipa as $forasset):
                 $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description." - ".$forasset->{"FA Location Code"};
             endforeach;
+
+            $asset['OTHERS-FACTORY'] = "OTHERS-FACTORY - MAINTENANCE OTHERS FACTORY";
+            $asset['OTHERS-RND'] = "OTHERS-RND - MAINTENANCE RND OTHERS";
+    
 
             view()->share('asset', $asset);
 
