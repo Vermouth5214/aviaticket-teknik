@@ -235,10 +235,10 @@ class TicketController extends Controller
 
 		if($data->save()){
             //send email ticket baru
-            // $email = ['it_3@avianbrands.com','tek_1@avianbrands.com'];
+            $email = ['it_3@avianbrands.com', 'tek_1@avianbrands.com', 'tek10@avian.com','aviantek01@gmail.com'];
             // $email = ['donny@avian.com', 'it_2@avianbrands.com'];
             // $email = ['it_3@avianbrands.com'];
-            $email = ['oeidonny.winarto@gmail.com'];
+            // $email = ['oeidonny.winarto@gmail.com'];
             //email ke IT
             // $email = ['it_1@avianbrands.com', 'it_2@avianbrands.com', 'it_4@avianbrands.com', 'it_5@avianbrands.com', 'it_6@avianbrands.com'];
             // if (Session::get('userinfo')['tipe'] == "AGEN"){
