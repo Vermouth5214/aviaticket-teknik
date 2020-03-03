@@ -710,7 +710,7 @@ class TicketController extends Controller
 
         }
 
-        $data = Ticket::select(['ticket.*','category.category','user_ticket.name','user_ticket.area'])
+        $data = Ticket::select(['ticket.*','category.category','user_ticket.name','user_ticket.area',DB::raw('IFNULL(assignee.name, ticket.assignee) as assignee')])
                 ->leftJoin('user_ticket','user_ticket.username','=','ticket.reldag')
                 ->leftJoin('user_ticket as assignee','assignee.username','=','ticket.assignee')
                 ->leftJoin('category','ticket.category_id','=','category.id')

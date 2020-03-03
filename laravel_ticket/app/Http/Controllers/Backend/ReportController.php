@@ -139,7 +139,7 @@ class ReportController extends Controller
 
         }
         
-        $data = Ticket::select(['ticket.*','assignee_t.name as user_assignee','request_close_t.name as user_request', 'answer_t.name as user_answer','category.category AS category','user_ticket.name AS creator', 
+        $data = Ticket::select(['ticket.*',DB::raw('IFNULL(request_close_t.name, ticket.user_request_close) as user_request'), DB::raw('IFNULL(assignee_t.name, ticket.assignee) as user_assignee'), 'answer_t.name as user_answer','category.category AS category','user_ticket.name AS creator', 
         DB::raw('
         ifnull
         (
