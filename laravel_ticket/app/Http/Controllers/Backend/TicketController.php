@@ -133,10 +133,19 @@ class TicketController extends Controller
             $asset[$forasset->Kode] = $forasset->Kode." - ".$forasset->Nama." - ".$forasset->Lokasi;
         endforeach;
         foreach ($NAVAssetCat as $forasset):
-            $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description." - ".$forasset->{"FA Location Code"};
+            if (substr($forasset->No_,1,1) == "K"){
+                $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description." - ".$forasset->{"FA Location Code"}." - ".$forasset->{"Nopol Lama"};
+            } else {
+                $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description." - ".$forasset->{"FA Location Code"};
+            }
+            
         endforeach;
         foreach ($NAVAssetPipa as $forasset):
-            $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description." - ".$forasset->{"FA Location Code"};
+            if (substr($forasset->No_,1,1) == "K"){
+                $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description." - ".$forasset->{"FA Location Code"}." - ".$forasset->{"Nopol Lama"};
+            } else {
+                $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description." - ".$forasset->{"FA Location Code"};
+            }
         endforeach;
 
         $asset['OTHERS-FACTORY'] = "OTHERS-FACTORY - MAINTENANCE OTHERS FACTORY";
