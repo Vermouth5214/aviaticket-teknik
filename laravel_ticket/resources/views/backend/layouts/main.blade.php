@@ -50,10 +50,10 @@
         <script src="<?=url('vendors/jquery/dist/jquery.min.js');?>"></script>
         <style>
             .left_col {
-                background : #004230;
+                background : #00585c;
             }
             body {
-                background : #004230;
+                background : #00585c;
             }
 
             .nav.side-menu>li.active>a{

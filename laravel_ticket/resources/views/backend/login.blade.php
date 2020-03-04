@@ -9,7 +9,7 @@
                 <section class="login_content">
                     <form method="post" id="formLogin">
                         <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
-                        <h1>Login Form</h1>
+                        <h1>AVIA Ticket Teknik</h1>
                         <div class="error-alert"></div>
                         <div>
                             <input type="text" class="form-control" placeholder="Username" required="" name="username" />
