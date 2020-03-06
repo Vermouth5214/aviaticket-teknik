@@ -124,8 +124,8 @@ class TicketController extends Controller
 
         //load asset
         $AMSAsset = AMSAsset::where('jenis','<>','')->get();
-        $NAVAssetCat = NAVAssetCat::get();        
-        $NAVAssetPipa = NAVAssetPipa::get();
+        $NAVAssetCat = NAVAssetCat::where('Blocked', 0)->get();        
+        $NAVAssetPipa = NAVAssetPipa::where('Blocked', 0)->get();
 
         $asset = [];
         $asset[''] = '';
@@ -385,8 +385,8 @@ class TicketController extends Controller
 
             //load asset            
             $AMSAsset = AMSAsset::where('jenis','<>','')->get();
-            $NAVAssetCat = NAVAssetCat::get();        
-            $NAVAssetPipa = NAVAssetPipa::get();
+            $NAVAssetCat = NAVAssetCat::where('Blocked', 0)->get();        
+            $NAVAssetPipa = NAVAssetPipa::where('Blocked', 0)->get();
     
             $asset = [];
             foreach ($AMSAsset as $forasset):
