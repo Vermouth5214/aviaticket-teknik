@@ -109,7 +109,7 @@
                     endif;
                 //jika user yang bikin ticket
                     $text = "Close";
-                    if (($data[0]->user_created == $userinfo['username']) && ($visible)):
+                    if (($data[0]->user_created == $userinfo['username']) && ($visible) && $data[0]->status == 3):
                         if ($data[0]->status == 3){
                             $text = "Close";
                         }
