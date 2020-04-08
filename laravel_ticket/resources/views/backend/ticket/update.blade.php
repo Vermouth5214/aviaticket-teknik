@@ -98,15 +98,8 @@
                 //jika mode edit dan status belum close
                 $visible = true;
                 if ((isset($data)) && ($data[0]->status != 4)):
-                    //jika admin yang edit
-                    if (($data[0]->status == 2) && (($userinfo['priv'] == "VSUPER")  || (($userinfo['priv'] == "VADM") && ($data[0]->assignee == $userinfo['username']) && (date('Y-m-d') >= date('Y-m-d',strtotime($data[0]->start))  ) ))):
-                        $visible = false;
                 ?>
-                        <div class="col-md-3 col-sm-3 col-xs-4 form-group pull-right top_search">                
-                            <a href="<?=url('backend/ticket/close/'.$data[0]->id);?>" id="close" class="btn btn-block btn-danger">Close</a>
-                        </div>
                 <?php
-                    endif;
                 //jika user yang bikin ticket
                     $text = "Close";
                     if (($data[0]->user_created == $userinfo['username']) && ($visible) && $data[0]->status == 3):
