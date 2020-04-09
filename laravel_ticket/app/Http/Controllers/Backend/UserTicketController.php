@@ -50,12 +50,12 @@ class UserTicketController extends Controller
         //
         $cekusername = UserTicket::where('username',$request->username)->get()->count();
 
-        $ldapconn = ldap_connect(env('LDAP_HOST'));
+        $ldapconn = ldap_connect('192.168.110.110');
         ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
         ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, 0);
 
-        $searchUser = env('LDAP_USERNAME');
-        $searchPass = env('LDAP_PASSWORD');
+        $searchUser = 'donny';
+        $searchPass = 'gogreenab';
         $username = $request->username."@avianbrands.com";
         
         $ldap_success = false;
@@ -157,12 +157,12 @@ class UserTicketController extends Controller
         $validator = Validator::make($request->all(),[]);
         $cekusername = UserTicket::where('user_ticket.id','<>',$id)->where('username',$request->username)->get()->count();
 
-        $ldapconn = ldap_connect(env('LDAP_HOST'));
+        $ldapconn = ldap_connect('192.168.110.110');
         ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
         ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, 0);
 
-        $searchUser = env('LDAP_USERNAME');
-        $searchPass = env('LDAP_PASSWORD');
+        $searchUser = 'donny';
+        $searchPass = 'gogreenab';
         $username = $request->username."@avianbrands.com";
         
         $ldap_success = false;

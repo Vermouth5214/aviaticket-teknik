@@ -152,6 +152,14 @@
                         ?>
                         <input type="hidden" name="FAText" id="FAText">
 						<div class="form-group">
+							<label class="control-label col-sm-3 col-xs-12">QR Code</label>
+							<div class="col-sm-2 col-xs-12">
+                                <?php
+                                    echo DNS2D::getBarcodeHTML($no_ticket, 'QRCODE',6,6);
+                                ?>
+							</div>
+                        </div>
+						<div class="form-group">
 							<label class="control-label col-sm-3 col-xs-12">Ticket No</label>
 							<div class="col-sm-3 col-xs-12">
 								<input type="text" name="no_ticket" class="form-control" value="<?=$no_ticket;?>" disabled>

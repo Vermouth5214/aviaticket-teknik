@@ -40,8 +40,8 @@ class LoginController extends Controller {
 			if ($check->tipe == "AD"){
 				$ldap['user'] = $request->username;
 				$ldap['pass'] = $request->password;
-				$ldap['host']   = env('LDAP_HOST');
-				$ldap['port']   = env('LDAP_PORT');
+				$ldap['host']   = '192.168.110.110';
+				$ldap['port']   = 389;
 				
 				$ldap['conn'] = ldap_connect( $ldap['host'], $ldap['port'] )
 					or die("Could not connect to {$ldap['host']}" );
