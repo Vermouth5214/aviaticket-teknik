@@ -349,6 +349,7 @@
                                 <th>Ticket No</th>
                                 <th>Subject</th>
                                 <th>FA Code</th>
+                                <th>PP No</th>
 								<th>Requester</th>
                                 <th>Request Date</th>
                                 <th>Start Date</th>
@@ -408,6 +409,7 @@
 				{data: 'no_ticket', name: 'no_ticket'},
                 {data: 'judul', name: 'judul'},
                 {data: 'FACode', name: 'FACode'},
+                {data: 'PP', name: 'PP', orderable: false, searchable: false},
 				{data: 'name', name: 'user_ticket.name'},
 				{data: 'created_at', name: 'ticket.created_at'},
                 {data: 'start', name: 'ticket.start'},
@@ -416,7 +418,7 @@
                 {data: 'prioritas', name: 'prioritas'}
 			],
 			responsive: false,
-            order : [[ 6, "desc" ]]
+            order : [[ 7, "desc" ]]
 		});
 	</script>
 	<?php
@@ -466,6 +468,7 @@
 				{data: 'no_ticket', name: 'no_ticket'},
                 {data: 'judul', name: 'judul'},
                 {data: 'FACode', name: 'FACode'},
+                {data: 'PP', name: 'PP', orderable: false, searchable: false},
 				{data: 'name', name: 'user_ticket.name'},
 				{data: 'created_at', name: 'ticket.created_at'},
                 {data: 'start', name: 'ticket.start'},
@@ -474,7 +477,7 @@
                 {data: 'prioritas', name: 'prioritas'}
 			],
 			responsive: false,
-            order : [[ 6, "desc" ]]
+            order : [[ 7, "desc" ]]
 		});
 	</script>
 	<?php

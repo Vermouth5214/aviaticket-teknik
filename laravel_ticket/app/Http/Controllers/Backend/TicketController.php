@@ -15,6 +15,8 @@ use App\Model\UserTicket;
 use App\Model\AMSAsset;
 use App\Model\NAVAssetCat;
 use App\Model\NAVAssetPipa;
+use App\Model\NAVPPCat;
+use App\Model\NAVPPPipa;
 use Illuminate\Support\Facades\Redirect;
 use Validator;
 use Datatables;
@@ -399,12 +401,31 @@ class TicketController extends Controller
                 $asset[$forasset->No_] = $forasset->No_." - ".$forasset->Description." - ".$forasset->{"FA Location Code"};
             endforeach;
 
+            $nama = '';
+            if (strlen($data[0]->assignee) > 0){
+                $nama_assignee = UserTicket::where('username', '=', $data[0]->assignee)->get();
+                if (count($nama_assignee) == 1){
+                    $nama = $nama_assignee[0]->name;
+                }
+            }
+
+            $noPP = "";
+            $PP = NAVPPCat::select(DB::raw('DISTINCT [Purchase Requisition No_]'))->where('Issue Ticket No','=', $data[0]->no_ticket)->get();
+            if (count($PP) == 0){
+                $PP = NAVPPPipa::select(DB::raw('DISTINCT [Purchase Requisition No_]'))->where('Issue Ticket No','=', $data[0]->no_ticket)->get();
+            }
+            if (count($PP) == 1){
+                $noPP = $PP[0]->{"Purchase Requisition No_"};
+            }
+
+
             $asset['OTHERS-FACTORY'] = "OTHERS-FACTORY - MAINTENANCE OTHERS FACTORY";
             $asset['OTHERS-RND'] = "OTHERS-RND - MAINTENANCE RND OTHERS";
     
 
             view()->share('asset', $asset);
-
+            view()->share('nama', $nama);
+            view()->share('noPP', $noPP);
             view()->share('list_category', $category);
             view()->share('list_assignee', $assignee);
 			return view ('backend.ticket.update', ['data' => $data]);
@@ -792,6 +813,17 @@ class TicketController extends Controller
                     $text = "Major";
                 }
                 return $text;
+            })
+            ->addColumn('PP', function($data){
+                $noPP = "";
+                $PP = NAVPPCat::select(DB::raw('DISTINCT [Purchase Requisition No_]'))->where('Issue Ticket No','=', $data->no_ticket)->get();
+                if (count($PP) == 0){
+                    $PP = NAVPPPipa::select(DB::raw('DISTINCT [Purchase Requisition No_]'))->where('Issue Ticket No','=', $data->no_ticket)->get();
+                }
+                if (count($PP) == 1){
+                    $noPP = $PP[0]->{"Purchase Requisition No_"};
+                }
+                return $noPP;
             })
 			->addColumn('action', function ($data) {
 				$url_edit = url('backend/ticket/'.$data->id.'/edit');

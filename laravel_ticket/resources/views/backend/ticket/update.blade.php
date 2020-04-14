@@ -81,7 +81,7 @@
             }
 
             if (strlen($data[0]->assignee) > 0){
-                $assignee = $data[0]->assignee;
+                $assignee = $data[0]->assignee." - ".$nama  ;
             }
 
 			$method = "PUT";
@@ -330,6 +330,12 @@
 							<label class="control-label col-sm-3 col-xs-12">Assignee</label>
 							<div class="col-sm-3 col-xs-12">
                                 <input disabled type='text' class="form-control" value='<?=$assignee;?>' />
+							</div>
+                        </div>
+						<div class="form-group">
+							<label class="control-label col-sm-3 col-xs-12">PP No</label>
+							<div class="col-sm-3 col-xs-12">
+                                <input disabled type='text' class="form-control" value='<?=$noPP;?>' />
 							</div>
                         </div>
                         <hr/>
