@@ -13,10 +13,122 @@
 
 use App\Model\Ticket;
 use App\Model\UserTicket;
+use App\Model\NAV;
 
 
 Route::get('/', function () {
 	return redirect('backend/');
+});
+
+Route::get('/cron/NAV', function () {
+    $data_ticket = Ticket::select('no_ticket')->where('pembelian','=',1)->where('status','>',0)->where('status','<',4)->get();
+    if (count($data_ticket)):
+        // foreach ($data_ticket as $ticket):
+        //     $no_ticket = $ticket->no_ticket;
+        //     $data_NAV = DB::connection('DB-NAV')
+        //                 ->select("
+        //                     select 
+        //                         PRL.[Purchase Requisition No_] as NoPP, PRL.[PR Status] as StatusPP, PR.[Creation Date] as TglPP,
+        //                         PL.[Document No_] as NoPO, PH.Status as StatusPO, PH.[Document Date] as TglPO,
+        //                         PB.[Document No_] as NoPB, PB.[Document Date] as TglPB
+        //                     from [PT AVIA AVIAN\$Purchase Request Line] PRL
+        //                     left join [PT AVIA AVIAN\$Purchase Request] PR
+        //                     on PRL.[Purchase Requisition No_] = PR.No_
+        //                     left join [PT AVIA AVIAN\$Purchase Line] PL
+        //                     on PRL.[Purchase Requisition No_] = PL.[PR No_]
+        //                     left join [PT AVIA AVIAN\$Purchase Header] PH
+        //                     on PL.[Document No_] = PH.No_
+        //                     left join (
+        //                         select PBL.[Document No_], PBL.[Order No_], PBH.[Document Date]
+        //                             from [PT AVIA AVIAN\$Purch_ Rcpt_ Line] PBL
+        //                             left join [PT AVIA AVIAN\$Purch_ Rcpt_ Header] PBH
+        //                             on PBL.[Document No_] = PBH.No_
+        //                             where PBL.[Order No_] <> '' and PBL.Correction = 0 and PBL.Quantity > 0
+        //                             group by PBL.[Document No_], PBL.[Order No_], PBH.[Document Date]
+        //                     ) PB
+        //                     on PL.[Document No_] = PB.[Order No_]
+        //                     where [Issue Ticket No] = '".$no_ticket."'
+        //                     order by PRL.[Purchase Requisition No_] ASC, PR.[Creation Date] ASC, PL.[Document No_] ASC, PH.[Document Date] ASC, PB.[Document No_] ASC, PB.[Document Date] ASC
+        //                 ");
+            
+        //     //delete di tabel nav yang no ticket nya ada di list
+        //     $delete = NAV::where('no_ticket',$no_ticket)->delete();
+            
+        //     foreach ($data_NAV as $data):
+        //         //insert baru 
+        //         $insert = new NAV();
+        //         $insert->no_ticket = $no_ticket;
+
+        //         if (isset($data->NoPP)):
+        //             $insert->noPP = $data->NoPP;
+        //             $statusPP = "";
+        //             if ($data->StatusPP == 0){
+        //                 $statusPP = "Not Approved";
+        //             } else 
+        //             if ($data->StatusPP == 1){
+        //                 $statusPP = "Approved";
+        //             } else 
+        //             if ($data->StatusPP == 2){
+        //                 $statusPP = "Closed";
+        //             }
+        //             $insert->statusPP = $statusPP;
+        //             $insert->tglPP = date('Y-m-d', strtotime($data->TglPP));
+        //         endif;
+
+        //         if (isset($data->NoPO)):
+        //             $insert->noPO = $data->NoPO;
+        //             $statusPO = "";
+        //             if ($data->StatusPO == 0){
+        //                 $statusPO = "Open";
+        //             } else 
+        //             if ($data->StatusPO == 1){
+        //                 $statusPO = "Released";
+        //             } else 
+        //             if ($data->StatusPO == 2){
+        //                 $statusPO = "Pending Approval";
+        //             } else 
+        //             if ($data->StatusPO == 3){
+        //                 $statusPO = "Pending Prepayment";
+        //             }
+        //             $insert->statusPO = $statusPO;
+        //             $insert->tglPO = date('Y-m-d', strtotime($data->TglPO));
+        //         endif;
+
+        //         if (isset($data->NoPB)):
+        //             $insert->noPB = $data->NoPB;
+        //             $insert->tglPB = date('Y-m-d', strtotime($data->TglPB));
+        //         endif;
+
+        //         $insert->save();
+        //     endforeach;
+        // endforeach;
+
+
+        //update ke tabel ticket
+        $data_concat = DB::select("
+            SELECT no_ticket, 
+                group_concat(distinct noPP) as NoPP,  group_concat(distinct statusPP) as StatusPP, group_concat(distinct tglPP) as TglPP,
+                group_concat(distinct noPO) as NoPO,  group_concat(distinct statusPO) as StatusPO, group_concat(distinct tglPO) as TglPO,
+                group_concat(distinct noPB) as NoPB,  group_concat(distinct tglPB) as TglPB
+            FROM nav
+            group by no_ticket
+        ");
+        if (count($data_concat)):
+            foreach ($data_concat as $data):
+                $data_ticket = Ticket::where('no_ticket', $data->no_ticket)->first();
+                $update = Ticket::find($data_ticket->id);
+                $update->noPP = $data->NoPP;
+                $update->tglPP = $data->TglPP;
+                $update->statusPP = $data->StatusPP;
+                $update->noPO = $data->NoPO;
+                $update->tglPO = $data->TglPO;
+                $update->statusPO = $data->StatusPO;
+                $update->noPB = $data->NoPB;
+                $update->tglPB = $data->TglPB;
+                $update->save();
+            endforeach;
+        endif;
+    endif;
 });
 
 

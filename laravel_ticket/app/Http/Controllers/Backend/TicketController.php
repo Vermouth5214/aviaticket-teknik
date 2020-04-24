@@ -40,6 +40,10 @@ class TicketController extends Controller
         $userinfo = Session::get('userinfo');
 
         $status = 999;
+        $tipe = 999;
+        $noPP = "";
+        $noPO = "";
+        $noPB = "";
         $category = 999;
         $closeby = 999;
         $assignee = 999;
@@ -92,6 +96,18 @@ class TicketController extends Controller
         if (isset($_GET["user_agen"])){
             $user_agen = $_GET['user_agen'];
         }
+        if (isset($_GET["tipe"])){
+            $tipe = $_GET['tipe'];
+        }
+        if (isset($_GET["noPP"])){
+            $noPP = $_GET['noPP'];
+        }
+        if (isset($_GET["noPO"])){
+            $noPO = $_GET['noPO'];
+        }
+        if (isset($_GET["noPB"])){
+            $noPB = $_GET['noPB'];
+        }
 
 		view()->share('startDate',$startDate);
 		view()->share('endDate',$endDate);
@@ -103,7 +119,10 @@ class TicketController extends Controller
         view()->share('status',$status);
         view()->share('user_type',$user_type);
         view()->share('user_agen',$user_agen);
-
+        view()->share('tipe',$tipe);
+        view()->share('noPO',$noPO);
+        view()->share('noPP',$noPP);
+        view()->share('noPB',$noPB);
         view()->share('category_list',$category_list);
         view()->share('assignee_list',$assignee_list);
         view()->share('user_agen_list', $user_agen_list);        
@@ -409,15 +428,6 @@ class TicketController extends Controller
                 }
             }
 
-            $noPP = "";
-            $PP = NAVPPCat::select(DB::raw('DISTINCT [Purchase Requisition No_]'))->where('Issue Ticket No','=', $data[0]->no_ticket)->get();
-            if (count($PP) == 0){
-                $PP = NAVPPPipa::select(DB::raw('DISTINCT [Purchase Requisition No_]'))->where('Issue Ticket No','=', $data[0]->no_ticket)->get();
-            }
-            if (count($PP) == 1){
-                $noPP = $PP[0]->{"Purchase Requisition No_"};
-            }
-
 
             $asset['OTHERS-FACTORY'] = "OTHERS-FACTORY - MAINTENANCE OTHERS FACTORY";
             $asset['OTHERS-RND'] = "OTHERS-RND - MAINTENANCE RND OTHERS";
@@ -425,7 +435,6 @@ class TicketController extends Controller
 
             view()->share('asset', $asset);
             view()->share('nama', $nama);
-            view()->share('noPP', $noPP);
             view()->share('list_category', $category);
             view()->share('list_assignee', $assignee);
 			return view ('backend.ticket.update', ['data' => $data]);
@@ -702,6 +711,10 @@ class TicketController extends Controller
     }
 	public function datatable() {
         $userinfo = Session::get('userinfo');
+        $tipe = 999;
+        $noPP = "";
+        $noPO = "";
+        $noPB = "";
         $status = 999;
         $closeby = 999;
         $overdue = 999;
@@ -737,7 +750,18 @@ class TicketController extends Controller
 			if (isset($_GET["user_agen"])){
 				$user_agen = $_GET['user_agen'];
             }
-
+			if (isset($_GET["tipe"])){
+				$tipe = $_GET['tipe'];
+            }
+			if (isset($_GET["noPP"])){
+				$noPP = $_GET['noPP'];
+            }
+			if (isset($_GET["noPO"])){
+				$noPO = $_GET['noPO'];
+            }
+			if (isset($_GET["noPB"])){
+				$noPB = $_GET['noPB'];
+            }
         }
 
         $data = Ticket::select(['ticket.*','category.category','user_ticket.name','user_ticket.area',DB::raw('IFNULL(assignee.name, ticket.assignee) as assignee')])
@@ -793,6 +817,24 @@ class TicketController extends Controller
             $data = $data->where('ticket.reldag','=',$user_agen);
         }
 
+        if ($tipe != 999){
+            if ($tipe == 1){
+                $data = $data->where('ticket.pembelian','=',$tipe);
+            } else {
+                $data = $data->whereRaw('(ticket.pembelian = 0 or ticket.pembelian is null)');
+            }
+        }
+
+        if ($noPP != ""){
+            $data = $data->whereRaw("ticket.noPP like '%".$noPP."%'");
+        }
+        if ($noPO != ""){
+            $data = $data->whereRaw("ticket.noPO like '%".$noPO."%'");
+        }
+        if ($noPB != ""){
+            $data = $data->whereRaw("ticket.noPB like '%".$noPB."%'");
+        }
+
         return Datatables::of($data)
             ->editColumn('created_at', function($data){
                 return date('d-m-Y H:i:s', strtotime($data->created_at));
@@ -814,16 +856,44 @@ class TicketController extends Controller
                 }
                 return $text;
             })
-            ->addColumn('PP', function($data){
-                $noPP = "";
-                $PP = NAVPPCat::select(DB::raw('DISTINCT [Purchase Requisition No_]'))->where('Issue Ticket No','=', $data->no_ticket)->get();
-                if (count($PP) == 0){
-                    $PP = NAVPPPipa::select(DB::raw('DISTINCT [Purchase Requisition No_]'))->where('Issue Ticket No','=', $data->no_ticket)->get();
+            ->editColumn('tglPP', function($data){
+                $tgl = explode(",", $data->tglPP);
+                $tgl_cetak = "";
+                foreach ($tgl as $tgl_detail):
+                    if ($tgl_detail <> ""){
+                        $tgl_cetak .= date("d-m-Y", strtotime($tgl_detail)).",";
+                    }
+                endforeach;
+                if ($tgl_cetak <> "" ){
+                    $tgl_cetak = substr($tgl_cetak,0,-1);
                 }
-                if (count($PP) == 1){
-                    $noPP = $PP[0]->{"Purchase Requisition No_"};
+                return $tgl_cetak;
+            })
+            ->editColumn('tglPO', function($data){
+                $tgl = explode(",", $data->tglPO);
+                $tgl_cetak = "";
+                foreach ($tgl as $tgl_detail):
+                    if ($tgl_detail <> ""){
+                        $tgl_cetak .= date("d-m-Y", strtotime($tgl_detail)).",";
+                    }
+                endforeach;
+                if ($tgl_cetak <> "" ){
+                    $tgl_cetak = substr($tgl_cetak,0,-1);
                 }
-                return $noPP;
+                return $tgl_cetak;
+            })
+            ->editColumn('tglPB', function($data){
+                $tgl = explode(",", $data->tglPB);
+                $tgl_cetak = "";
+                foreach ($tgl as $tgl_detail):
+                    if ($tgl_detail <> ""){
+                        $tgl_cetak .= date("d-m-Y", strtotime($tgl_detail)).",";
+                    }
+                endforeach;
+                if ($tgl_cetak <> "" ){
+                    $tgl_cetak = substr($tgl_cetak,0,-1);
+                }
+                return $tgl_cetak;
             })
 			->addColumn('action', function ($data) {
 				$url_edit = url('backend/ticket/'.$data->id.'/edit');
