@@ -50,6 +50,16 @@
         $method = "POST";
 		$mode = "Create";
         $url = "backend/ticket/";
+
+        $noPP = "";
+        $noPO = "";
+        $noPB = "";
+        $statusPP = "";
+        $statusPO = "";
+        $statusPB = "";
+        $tglPP = "";
+        $tglPO = "";
+        $tglPB = "";
 		if (isset($data)){
             $tanggal = date('d F Y', strtotime($data[0]->created_at));
             $no_ticket = $data[0]->no_ticket;
@@ -87,6 +97,52 @@
 			$method = "PUT";
 			$mode = "Edit";
             $url = "backend/ticket/".$data[0]->id;
+
+            $noPP = $data[0]->noPP;
+            $noPO = $data[0]->noPO;
+            $noPB = $data[0]->noPB;
+            $statusPP = $data[0]->statusPP;
+            $statusPO = $data[0]->statusPO;
+            $statusPB = $data[0]->statusPB;
+            
+            $tgl = explode(",", $data[0]->tglPP);
+            $tgl_cetak = "";
+            foreach ($tgl as $tgl_detail):
+                if ($tgl_detail <> ""){
+                    $tgl_cetak .= date("d-m-Y", strtotime($tgl_detail)).",";
+                }
+            endforeach;
+            if ($tgl_cetak <> "" ){
+                $tgl_cetak = substr($tgl_cetak,0,-1);
+            }
+            $tglPP = $tgl_cetak;
+
+
+            $tgl = explode(",", $data[0]->tglPO);
+            $tgl_cetak = "";
+            foreach ($tgl as $tgl_detail):
+                if ($tgl_detail <> ""){
+                    $tgl_cetak .= date("d-m-Y", strtotime($tgl_detail)).",";
+                }
+            endforeach;
+            if ($tgl_cetak <> "" ){
+                $tgl_cetak = substr($tgl_cetak,0,-1);
+            }
+            $tglPO = $tgl_cetak;
+
+
+            $tgl = explode(",", $data[0]->tglPB);
+            $tgl_cetak = "";
+            foreach ($tgl as $tgl_detail):
+                if ($tgl_detail <> ""){
+                    $tgl_cetak .= date("d-m-Y", strtotime($tgl_detail)).",";
+                }
+            endforeach;
+            if ($tgl_cetak <> "" ){
+                $tgl_cetak = substr($tgl_cetak,0,-1);
+            }
+            $tglPB = $tgl_cetak;
+
         }
 	?>
 	<div class="page-title">
@@ -333,12 +389,53 @@
 							</div>
                         </div>
 						<div class="form-group">
-							<label class="control-label col-sm-3 col-xs-12">PP No</label>
-							<div class="col-sm-3 col-xs-12">
+							<label class="control-label col-sm-3 col-xs-12">No PP</label>
+							<div class="col-sm-7 col-xs-12">
                                 <input disabled type='text' class="form-control" value='<?=$noPP;?>' />
 							</div>
                         </div>
-                        <hr/>
+						<div class="form-group">
+							<label class="control-label col-sm-3 col-xs-12">Status PP</label>
+							<div class="col-sm-7 col-xs-12">
+                                <input disabled type='text' class="form-control" value='<?=$statusPP;?>' />
+							</div>
+                        </div>
+						<div class="form-group">
+							<label class="control-label col-sm-3 col-xs-12">Tgl PP</label>
+							<div class="col-sm-7 col-xs-12">
+                                <input disabled type='text' class="form-control" value='<?=$tglPP;?>' />
+							</div>
+                        </div>
+						<div class="form-group">
+							<label class="control-label col-sm-3 col-xs-12">No PO</label>
+							<div class="col-sm-7 col-xs-12">
+                                <input disabled type='text' class="form-control" value='<?=$noPO;?>' />
+							</div>
+                        </div>
+						<div class="form-group">
+							<label class="control-label col-sm-3 col-xs-12">Status PO</label>
+							<div class="col-sm-7 col-xs-12">
+                                <input disabled type='text' class="form-control" value='<?=$statusPO;?>' />
+							</div>
+                        </div>
+						<div class="form-group">
+							<label class="control-label col-sm-3 col-xs-12">Tgl PO</label>
+							<div class="col-sm-7 col-xs-12">
+                                <input disabled type='text' class="form-control" value='<?=$tglPO;?>' />
+							</div>
+                        </div>
+						<div class="form-group">
+							<label class="control-label col-sm-3 col-xs-12">No PB</label>
+							<div class="col-sm-7 col-xs-12">
+                                <input disabled type='text' class="form-control" value='<?=$noPB;?>' />
+							</div>
+                        </div>
+						<div class="form-group">
+							<label class="control-label col-sm-3 col-xs-12">Tgl PB</label>
+							<div class="col-sm-7 col-xs-12">
+                                <input disabled type='text' class="form-control" value='<?=$tglPB;?>' />
+							</div>
+                        </div>
                         <?php
                             endif;
                         ?>
