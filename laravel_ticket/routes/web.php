@@ -23,85 +23,85 @@ Route::get('/', function () {
 Route::get('/cron/NAV', function () {
     $data_ticket = Ticket::select('no_ticket')->where('pembelian','=',1)->where('status','>',0)->where('status','<',4)->get();
     if (count($data_ticket)):
-        // foreach ($data_ticket as $ticket):
-        //     $no_ticket = $ticket->no_ticket;
-        //     $data_NAV = DB::connection('DB-NAV')
-        //                 ->select("
-        //                     select 
-        //                         PRL.[Purchase Requisition No_] as NoPP, PRL.[PR Status] as StatusPP, PR.[Creation Date] as TglPP,
-        //                         PL.[Document No_] as NoPO, PH.Status as StatusPO, PH.[Document Date] as TglPO,
-        //                         PB.[Document No_] as NoPB, PB.[Document Date] as TglPB
-        //                     from [PT AVIA AVIAN\$Purchase Request Line] PRL
-        //                     left join [PT AVIA AVIAN\$Purchase Request] PR
-        //                     on PRL.[Purchase Requisition No_] = PR.No_
-        //                     left join [PT AVIA AVIAN\$Purchase Line] PL
-        //                     on PRL.[Purchase Requisition No_] = PL.[PR No_]
-        //                     left join [PT AVIA AVIAN\$Purchase Header] PH
-        //                     on PL.[Document No_] = PH.No_
-        //                     left join (
-        //                         select PBL.[Document No_], PBL.[Order No_], PBH.[Document Date]
-        //                             from [PT AVIA AVIAN\$Purch_ Rcpt_ Line] PBL
-        //                             left join [PT AVIA AVIAN\$Purch_ Rcpt_ Header] PBH
-        //                             on PBL.[Document No_] = PBH.No_
-        //                             where PBL.[Order No_] <> '' and PBL.Correction = 0 and PBL.Quantity > 0
-        //                             group by PBL.[Document No_], PBL.[Order No_], PBH.[Document Date]
-        //                     ) PB
-        //                     on PL.[Document No_] = PB.[Order No_]
-        //                     where [Issue Ticket No] = '".$no_ticket."'
-        //                     order by PRL.[Purchase Requisition No_] ASC, PR.[Creation Date] ASC, PL.[Document No_] ASC, PH.[Document Date] ASC, PB.[Document No_] ASC, PB.[Document Date] ASC
-        //                 ");
+        foreach ($data_ticket as $ticket):
+            $no_ticket = $ticket->no_ticket;
+            $data_NAV = DB::connection('DB-NAV')
+                        ->select("
+                            select 
+                                PRL.[Purchase Requisition No_] as NoPP, PRL.[PR Status] as StatusPP, PR.[Creation Date] as TglPP,
+                                PL.[Document No_] as NoPO, PH.Status as StatusPO, PH.[Document Date] as TglPO,
+                                PB.[Document No_] as NoPB, PB.[Document Date] as TglPB
+                            from [PT AVIA AVIAN\$Purchase Request Line] PRL
+                            left join [PT AVIA AVIAN\$Purchase Request] PR
+                            on PRL.[Purchase Requisition No_] = PR.No_
+                            left join [PT AVIA AVIAN\$Purchase Line] PL
+                            on PRL.[Purchase Requisition No_] = PL.[PR No_]
+                            left join [PT AVIA AVIAN\$Purchase Header] PH
+                            on PL.[Document No_] = PH.No_
+                            left join (
+                                select PBL.[Document No_], PBL.[Order No_], PBH.[Document Date]
+                                    from [PT AVIA AVIAN\$Purch_ Rcpt_ Line] PBL
+                                    left join [PT AVIA AVIAN\$Purch_ Rcpt_ Header] PBH
+                                    on PBL.[Document No_] = PBH.No_
+                                    where PBL.[Order No_] <> '' and PBL.Correction = 0 and PBL.Quantity > 0
+                                    group by PBL.[Document No_], PBL.[Order No_], PBH.[Document Date]
+                            ) PB
+                            on PL.[Document No_] = PB.[Order No_]
+                            where [Issue Ticket No] = '".$no_ticket."'
+                            order by PRL.[Purchase Requisition No_] ASC, PR.[Creation Date] ASC, PL.[Document No_] ASC, PH.[Document Date] ASC, PB.[Document No_] ASC, PB.[Document Date] ASC
+                        ");
             
-        //     //delete di tabel nav yang no ticket nya ada di list
-        //     $delete = NAV::where('no_ticket',$no_ticket)->delete();
+            //delete di tabel nav yang no ticket nya ada di list
+            $delete = NAV::where('no_ticket',$no_ticket)->delete();
             
-        //     foreach ($data_NAV as $data):
-        //         //insert baru 
-        //         $insert = new NAV();
-        //         $insert->no_ticket = $no_ticket;
+            foreach ($data_NAV as $data):
+                //insert baru 
+                $insert = new NAV();
+                $insert->no_ticket = $no_ticket;
 
-        //         if (isset($data->NoPP)):
-        //             $insert->noPP = $data->NoPP;
-        //             $statusPP = "";
-        //             if ($data->StatusPP == 0){
-        //                 $statusPP = "Not Approved";
-        //             } else 
-        //             if ($data->StatusPP == 1){
-        //                 $statusPP = "Approved";
-        //             } else 
-        //             if ($data->StatusPP == 2){
-        //                 $statusPP = "Closed";
-        //             }
-        //             $insert->statusPP = $statusPP;
-        //             $insert->tglPP = date('Y-m-d', strtotime($data->TglPP));
-        //         endif;
+                if (isset($data->NoPP)):
+                    $insert->noPP = $data->NoPP;
+                    $statusPP = "";
+                    if ($data->StatusPP == 0){
+                        $statusPP = "Not Approved";
+                    } else 
+                    if ($data->StatusPP == 1){
+                        $statusPP = "Approved";
+                    } else 
+                    if ($data->StatusPP == 2){
+                        $statusPP = "Closed";
+                    }
+                    $insert->statusPP = $statusPP;
+                    $insert->tglPP = date('Y-m-d', strtotime($data->TglPP));
+                endif;
 
-        //         if (isset($data->NoPO)):
-        //             $insert->noPO = $data->NoPO;
-        //             $statusPO = "";
-        //             if ($data->StatusPO == 0){
-        //                 $statusPO = "Open";
-        //             } else 
-        //             if ($data->StatusPO == 1){
-        //                 $statusPO = "Released";
-        //             } else 
-        //             if ($data->StatusPO == 2){
-        //                 $statusPO = "Pending Approval";
-        //             } else 
-        //             if ($data->StatusPO == 3){
-        //                 $statusPO = "Pending Prepayment";
-        //             }
-        //             $insert->statusPO = $statusPO;
-        //             $insert->tglPO = date('Y-m-d', strtotime($data->TglPO));
-        //         endif;
+                if (isset($data->NoPO)):
+                    $insert->noPO = $data->NoPO;
+                    $statusPO = "";
+                    if ($data->StatusPO == 0){
+                        $statusPO = "Open";
+                    } else 
+                    if ($data->StatusPO == 1){
+                        $statusPO = "Released";
+                    } else 
+                    if ($data->StatusPO == 2){
+                        $statusPO = "Pending Approval";
+                    } else 
+                    if ($data->StatusPO == 3){
+                        $statusPO = "Pending Prepayment";
+                    }
+                    $insert->statusPO = $statusPO;
+                    $insert->tglPO = date('Y-m-d', strtotime($data->TglPO));
+                endif;
 
-        //         if (isset($data->NoPB)):
-        //             $insert->noPB = $data->NoPB;
-        //             $insert->tglPB = date('Y-m-d', strtotime($data->TglPB));
-        //         endif;
+                if (isset($data->NoPB)):
+                    $insert->noPB = $data->NoPB;
+                    $insert->tglPB = date('Y-m-d', strtotime($data->TglPB));
+                endif;
 
-        //         $insert->save();
-        //     endforeach;
-        // endforeach;
+                $insert->save();
+            endforeach;
+        endforeach;
 
 
         //update ke tabel ticket
