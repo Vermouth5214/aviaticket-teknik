@@ -2,10 +2,11 @@
 	function deleteData(dt){
 		if (confirm("Are you sure you want to delete this data?")) {
 			$.ajax({
-				type:"DELETE",
+				type:"POST",
 				url:$(dt).data("url"),
 				data: {
-					"_token": "{{ csrf_token() }}"
+					"_token"  : "{{ csrf_token() }}",
+                    "_method" : "delete"
 				},				
 				success:function(response){
 					if(response.status){
