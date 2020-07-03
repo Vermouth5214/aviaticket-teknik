@@ -79,10 +79,10 @@
                                     <option value="4" <?=$selected;?>>Close</option>
                                 </select>
                             </div>
-                            <div class="col-xs-12 col-sm-1 text-right" style="margin-top:7px;">
+                            <div class="col-xs-12 col-sm-1 text-right hide" style="margin-top:7px;">
                                 Tipe
                             </div>
-                            <div class="col-xs-12 col-sm-5">
+                            <div class="col-xs-12 col-sm-5 hide">
                                 <select name="tipe" class="form-control">
                                     <?php
                                         $selected = "";
@@ -217,10 +217,10 @@
 									))
 								}}
                             </div>
-                            <div class="col-xs-12 col-sm-1 text-right" style="margin-top:7px;">
+                            <div class="col-xs-12 col-sm-1 text-right hide" style="margin-top:7px;">
                                 Tipe
                             </div>
-                            <div class="col-xs-12 col-sm-5">
+                            <div class="col-xs-12 col-sm-5 hide">
                                 <select name="tipe" class="form-control">
                                     <?php
                                         $selected = "";
