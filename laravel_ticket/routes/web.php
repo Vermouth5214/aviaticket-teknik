@@ -21,7 +21,7 @@ Route::get('/', function () {
 });
 
 Route::get('/cron/NAV', function () {
-    $data_ticket = Ticket::select('no_ticket')->where('pembelian','=',1)->where('status','>',0)->where('status','<',4)->get();
+    $data_ticket = Ticket::select('no_ticket')->where('status','>',0)->where('status','<',4)->get();
     if (count($data_ticket)):
         foreach ($data_ticket as $ticket):
             $no_ticket = $ticket->no_ticket;
