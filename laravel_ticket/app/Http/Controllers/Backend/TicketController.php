@@ -819,9 +819,13 @@ class TicketController extends Controller
 
         if ($tipe != 999){
             if ($tipe == 1){
-                $data = $data->where('ticket.pembelian','=',$tipe);
-            } else {
-                $data = $data->whereRaw('(ticket.pembelian = 0 or ticket.pembelian is null)');
+                $data = $data->where('ticket.pembelian','=',$tipe)->where('ticket.created_at','>=','2020-07-01');
+            } else 
+            if ($tipe == 2){
+                $data = $data->whereRaw('(ticket.pembelian = 1 and (ticket.noPP is not null or ticket.noPP <> "")) and ticket.created_at >= "2020-07-01"');
+            } else 
+            if ($tipe == 3){
+                $data = $data->whereRaw('(ticket.pembelian = 1 and (ticket.noPP is null or ticket.noPP = "")) and ticket.created_at >= "2020-07-01"');
             }
         }
 

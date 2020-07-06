@@ -21,7 +21,7 @@ Route::get('/', function () {
 });
 
 Route::get('/cron/NAV', function () {
-    $data_ticket = Ticket::select('no_ticket')->where('status','>',0)->where('status','<',4)->get();
+    $data_ticket = Ticket::select('no_ticket')->where('status','>',0)->where('status','<',4)->where('created_at','>=', '2020-07-01')->get();
     if (count($data_ticket)):
         foreach ($data_ticket as $ticket):
             $no_ticket = $ticket->no_ticket;
@@ -125,6 +125,7 @@ Route::get('/cron/NAV', function () {
                 $update->statusPO = $data->StatusPO;
                 $update->noPB = $data->NoPB;
                 $update->tglPB = $data->TglPB;
+                $update->pembelian = 1;
                 $update->save();
             endforeach;
         endif;

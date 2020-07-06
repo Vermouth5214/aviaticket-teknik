@@ -79,10 +79,10 @@
                                     <option value="4" <?=$selected;?>>Close</option>
                                 </select>
                             </div>
-                            <div class="col-xs-12 col-sm-1 text-right hide" style="margin-top:7px;">
+                            <div class="col-xs-12 col-sm-1 text-right" style="margin-top:7px;">
                                 Tipe
                             </div>
-                            <div class="col-xs-12 col-sm-5 hide">
+                            <div class="col-xs-12 col-sm-5">
                                 <select name="tipe" class="form-control">
                                     <?php
                                         $selected = "";
@@ -97,14 +97,21 @@
                                             $selected = "selected";
                                         }
                                     ?>
-                                    <option value="1" <?=$selected;?>>Pembelian saja</option>
+                                    <option value="1" <?=$selected;?>>Semua Pembelian</option>
                                     <?php
                                         $selected = "";
                                         if ($tipe == 2){
                                             $selected = "selected";
                                         }
                                     ?>
-                                    <option value="2" <?=$selected;?>>Bukan pembelian</option>
+                                    <option value="2" <?=$selected;?>>Pembelian yang sudah PP</option>
+                                    <?php
+                                        $selected = "";
+                                        if ($tipe == 3){
+                                            $selected = "selected";
+                                        }
+                                    ?>
+                                    <option value="3" <?=$selected;?>>Pembelian yang belum PP</option>
                                 </select>
                             </div>
                         </div>
@@ -217,10 +224,10 @@
 									))
 								}}
                             </div>
-                            <div class="col-xs-12 col-sm-1 text-right hide" style="margin-top:7px;">
+                            <div class="col-xs-12 col-sm-1 text-right" style="margin-top:7px;">
                                 Tipe
                             </div>
-                            <div class="col-xs-12 col-sm-5 hide">
+                            <div class="col-xs-12 col-sm-5">
                                 <select name="tipe" class="form-control">
                                     <?php
                                         $selected = "";
@@ -235,14 +242,21 @@
                                             $selected = "selected";
                                         }
                                     ?>
-                                    <option value="1" <?=$selected;?>>Pembelian saja</option>
+                                    <option value="1" <?=$selected;?>>Semua Pembelian</option>
                                     <?php
                                         $selected = "";
                                         if ($tipe == 2){
                                             $selected = "selected";
                                         }
                                     ?>
-                                    <option value="2" <?=$selected;?>>Bukan pembelian</option>
+                                    <option value="2" <?=$selected;?>>Pembelian yang sudah PP</option>
+                                    <?php
+                                        $selected = "";
+                                        if ($tipe == 3){
+                                            $selected = "selected";
+                                        }
+                                    ?>
+                                    <option value="3" <?=$selected;?>>Pembelian yang belum PP</option>
                                 </select>
                             </div>
                         </div>
@@ -310,7 +324,10 @@
 					<?php
 						endif;
 					?>
-					<br/>			
+					<br/>
+                    <p class="small blue">
+                        Keterangan : Data PP yang ditampilkan berasal dari ticket yang dibuat per tanggal 1 Juli 2020
+                    </p>
                     <table class="table table-striped table-hover table-bordered dt-responsive nowrap dataTable" cellspacing="0" width="100%">
 						<thead>
 							<tr>
